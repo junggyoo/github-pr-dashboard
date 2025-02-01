@@ -32,14 +32,33 @@ const fetchPullRequests = async (
 
   const octokit = getOctokit(token);
 
-  const { data } = await octokit.rest.search.issuesAndPullRequests({
+  // 리뷰어로 지정된 PR 검색
+  const reviewRequested = await octokit.rest.search.issuesAndPullRequests({
+    q: "is:pr is:open review-requested:@me -author:@me",
+    sort: "updated",
+    order: "desc",
+    per_page: 100,
+  });
+
+  // Assignee로 지정된 PR 검색
+  const assigned = await octokit.rest.search.issuesAndPullRequests({
     q: "is:pr is:open assignee:@me -author:@me",
     sort: "updated",
     order: "desc",
     per_page: 100,
   });
 
-  return data as GitHubSearchResponse;
+  // 결과 합치기 및 중복 제거
+  const allItems = [...reviewRequested.data.items, ...assigned.data.items];
+  const uniqueItems = Array.from(
+    new Map(allItems.map((item) => [item.id, item])).values()
+  );
+
+  return {
+    total_count: uniqueItems.length,
+    incomplete_results: false,
+    items: uniqueItems as PRListDto[],
+  };
 };
 
 export const usePullRequests = (token?: string) => {
@@ -53,6 +72,7 @@ export const usePullRequests = (token?: string) => {
       setPrList(data?.items || []);
     } catch (error) {
       console.error("Error fetching pull requests", error);
+      alert("GitHub API 요청 제한 도달");
     } finally {
       setIsLoading(false);
     }
