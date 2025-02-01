@@ -7,14 +7,14 @@ export async function loader() {
 	let DOMAIN = "";
 
 	if (window.location.hostname === "localhost") {
-		DOMAIN = "localhost:5173";
+		DOMAIN = "http://localhost:5173";
 	} else {
-		DOMAIN = "github-pr-dashboard-eoding.vercel.app";
+		DOMAIN = "https://github-pr-dashboard-eoding.vercel.app";
 	}
 
 	return redirect(
 		`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${encodeURIComponent(
-			`https://${DOMAIN}/auth/github/callback`
+			`${DOMAIN}/auth/github/callback`
 		)}`
 	);
 }
