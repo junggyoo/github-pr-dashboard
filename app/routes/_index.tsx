@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import Filter from "~/components/Filter";
 
 import PRListSection from "~/components/PRListSection";
 import { usePullRequests } from "~/service/usePullRequests";
@@ -18,6 +19,7 @@ export default function Index() {
   return (
     <div className="flex flex-col gap-[32px]">
       <section>대쉬보드 영역</section>
+      <Filter />
       <section>검색 및 필터 영역</section>
       <PRListSection prList={DUMMY_PR_LIST} />
     </div>
