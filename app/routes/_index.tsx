@@ -1,4 +1,58 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { Octokit } from "octokit";
+
+type LoaderData = {
+	assignedPRCount: number;
+	totalPRCount: number;
+	completedTodayCount: number;
+};
+
+export const loader: LoaderFunction = async () => {
+	const octokit = new Octokit({
+		auth: process.env.GITHUB_TOKEN,
+	});
+
+	try {
+		const username = "junggyoo"; // 실제 사용자 이름으로 변경 필요
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		// 나에게 할당된 PR 조회
+		const assignedPRs = await octokit.request("GET /search/issues", {
+			q: `is:pr is:open assignee:${username}`,
+			per_page: 100,
+		});
+
+		// 나에게 할당되었거나 리뷰어인 PR 조회
+		const totalPRs = await octokit.request("GET /search/issues", {
+			q: `is:pr is:open assignee:${username} OR review-requested:${username}`,
+			per_page: 100,
+		});
+
+		// 오늘 완료한 PR 조회
+		const completedToday = await octokit.request("GET /search/issues", {
+			q: `is:pr is:closed author:${username} closed:>=${
+				today.toISOString().split("T")[0]
+			}`,
+			per_page: 100,
+		});
+
+		return json<LoaderData>({
+			assignedPRCount: assignedPRs.data.total_count,
+			totalPRCount: totalPRs.data.total_count,
+			completedTodayCount: completedToday.data.total_count,
+		});
+	} catch (error) {
+		console.error("GitHub API Error:", error);
+		return json<LoaderData>({
+			assignedPRCount: 0,
+			totalPRCount: 0,
+			completedTodayCount: 0,
+		});
+	}
+};
 
 export const meta: MetaFunction = () => {
 	return [
@@ -8,10 +62,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-	// 실제로는 API나 데이터베이스에서 가져올 값들입니다
-	const myAssignedPRs = 5;
-	const totalPRs = 12;
-	const completedToday = 3;
+	const { assignedPRCount, totalPRCount, completedTodayCount } =
+		useLoaderData<LoaderData>();
 
 	return (
 		<div className="flex flex-col gap-[32px] p-6">
@@ -21,13 +73,13 @@ export default function Index() {
 					<div className="mb-6 text-sm font-medium text-gray-500">
 						나에게 할당된 PR
 					</div>
-					<div className="text-2xl font-semibold">{myAssignedPRs}개</div>
+					<div className="text-2xl font-semibold">{assignedPRCount}개</div>
 				</div>
 
 				{/* 총 PR */}
 				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
 					<div className="mb-6 text-sm font-medium text-gray-500">총 PR</div>
-					<div className="text-2xl font-semibold">{totalPRs}개</div>
+					<div className="text-2xl font-semibold">{totalPRCount}개</div>
 				</div>
 
 				{/* 오늘 완료한 PR */}
@@ -35,7 +87,7 @@ export default function Index() {
 					<div className="mb-6 text-sm font-medium text-gray-500">
 						오늘 완료한 PR
 					</div>
-					<div className="text-2xl font-semibold">{completedToday}개</div>
+					<div className="text-2xl font-semibold">{completedTodayCount}개</div>
 				</div>
 			</section>
 
