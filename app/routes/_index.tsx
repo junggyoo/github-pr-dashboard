@@ -16,6 +16,9 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+// 테스트
+console.log("승인");
+
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
   const token = session.get("token");
