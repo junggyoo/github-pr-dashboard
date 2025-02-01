@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Github PR Dashboard" },
   ];
 };
-
+console.log("test");
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
   const token = session.get("token");
