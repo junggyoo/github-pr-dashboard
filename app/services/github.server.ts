@@ -46,7 +46,7 @@ async function getFilteredPRList(octokit: Octokit, prStatus: PRStatus) {
 			case "approved":
 				return `${baseQuery} review:approved`; // 승인된 PR
 			case "commented":
-				return `${baseQuery} review:commented`; // 코멘트만 있는 PR
+				return `${baseQuery} commenter:@me`; // 코멘트만 있는 PR
 			default:
 				return baseQuery; // 전체 PR
 		}
