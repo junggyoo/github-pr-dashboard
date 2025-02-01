@@ -1,5 +1,5 @@
 import { cn } from "~/lib/utils";
-import { PRListDto } from "~/service/usePullRequests";
+import { PRListDto } from "~/types";
 import { formatDate } from "~/utils/format";
 
 interface RowProps {
@@ -77,7 +77,7 @@ const Badge = ({ label }: { label: string }) => {
       case "PENDING":
         return "bg-yellow-100 text-yellow-600";
       default:
-        return "bg-gray-100 text-gray-500";
+        return "bg-purple-100 text-purple-600";
     }
   };
 

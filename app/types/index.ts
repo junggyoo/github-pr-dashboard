@@ -9,3 +9,17 @@ export type PRReviewStatus =
   | "DISMISSED"
   | "ALL"
   | null;
+
+export interface PRListDto {
+  id: number;
+  number: number;
+  title: string;
+  html_url: string;
+  created_at: string;
+  user: {
+    login: string;
+    avatar_url: string;
+  };
+  repository_url: string;
+  myReviewState: PRReviewStatus;
+}
