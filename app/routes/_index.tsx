@@ -66,13 +66,33 @@ export const loader: LoaderFunction = async ({ request }) => {
 		new Map(allItems.map((item) => [item.id, item])).values()
 	);
 
-	return { prList: uniqueItems, prStatus };
+	// PR 요약 영역 데이터
+	const 나에게_할당된_PR_개수 = assigned.data.total_count;
+	const 총_PR_개수 = uniqueItems.length;
+	const 오늘_완료한_PR_개수 = uniqueItems.filter(
+		(item) =>
+			item.state === "closed" && item.closed_at === new Date().toISOString()
+	).length;
+
+	return {
+		prList: uniqueItems,
+		prStatus,
+		나에게_할당된_PR_개수,
+		총_PR_개수,
+		오늘_완료한_PR_개수,
+	};
 };
 
 export default function Index() {
 	const navigate = useNavigate();
 	const navigation = useNavigation();
-	const { prList, prStatus: initialStatus } = useLoaderData<typeof loader>();
+	const {
+		prList,
+		prStatus: initialStatus,
+		나에게_할당된_PR_개수,
+		총_PR_개수,
+		오늘_완료한_PR_개수,
+	} = useLoaderData<typeof loader>();
 	const [prStatus, setPrStatus] = useState<PRStatus>(initialStatus);
 
 	const handleStatusChange = (prStatus: PRStatus) => {
@@ -84,7 +104,33 @@ export default function Index() {
 
 	return (
 		<div className="flex flex-col gap-[32px]">
-			<section>대쉬보드 영역</section>
+			<section className="flex gap-5">
+				{/* 나에게 할당된 PR */}
+				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
+					<div className="mb-6 text-sm font-medium text-gray-500">
+						🚨 나의 승인이 필요한 PR
+					</div>
+					<div className="text-2xl font-semibold">
+						{나에게_할당된_PR_개수}개
+					</div>
+				</div>
+
+				{/* 총 PR */}
+				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
+					<div className="mb-6 text-sm font-medium text-gray-500">
+						🔥 내가 리뷰해야 할 PR
+					</div>
+					<div className="text-2xl font-semibold">{총_PR_개수}개</div>
+				</div>
+
+				{/* 오늘 완료한 PR */}
+				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
+					<div className="mb-6 text-sm font-medium text-gray-500">
+						🎉 오늘 완료한 PR
+					</div>
+					<div className="text-2xl font-semibold">{오늘_완료한_PR_개수}개</div>
+				</div>
+			</section>
 			<Filter prStatus={prStatus} onStatusChange={handleStatusChange} />
 			<section>검색 및 필터 영역</section>
 			{isLoading ? <div>Loading...</div> : <PRListSection prList={prList} />}
