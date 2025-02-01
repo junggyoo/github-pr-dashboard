@@ -1,6 +1,6 @@
 import type { MetaFunction, LoaderFunction } from "@remix-run/node";
-import { Octokit } from "@octokit/rest";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 import Filter from "~/components/Filter";
 import PRListSection from "~/components/PRListSection";
@@ -17,18 +17,17 @@ export const meta: MetaFunction = () => {
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request);
   const token = session.get("token");
-  console.log("token", token);
+
   if (!token) {
     return redirect("/auth/github");
   }
-  const octokit = new Octokit({
-    auth: token,
-  });
-  return null;
+
+  return { token };
 };
 
 export default function Index() {
-  const { prList } = usePullRequests("");
+  const { token } = useLoaderData<typeof loader>();
+  const { prList } = usePullRequests(token);
 
   console.log("prList", prList);
 

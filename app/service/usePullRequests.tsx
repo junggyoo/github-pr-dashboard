@@ -6,7 +6,9 @@ const getOctokit = (token: string) =>
     auth: token,
   });
 
-const fetchPullRequests = async (token: string) => {
+const fetchPullRequests = async (token?: string) => {
+  if (!token) return [];
+
   const octokit = getOctokit(token);
 
   const { data } = await octokit.rest.search.issuesAndPullRequests({
@@ -19,7 +21,7 @@ const fetchPullRequests = async (token: string) => {
   return data;
 };
 
-export const usePullRequests = (token: string) => {
+export const usePullRequests = (token?: string) => {
   const [prList, setPrList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
