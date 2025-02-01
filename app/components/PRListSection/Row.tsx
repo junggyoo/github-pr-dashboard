@@ -15,7 +15,7 @@ export default function Row({ pr }: RowProps) {
     <div
       className={cn(
         "flex justify-between items-center",
-        "bg-white border border-gray-200 rounded-[8px] p-[12px]",
+        "bg-white border border-gray-200 rounded-[8px] p-[20px] min-h-[100px]",
         "hover:bg-gray-100"
       )}
     >
@@ -24,13 +24,13 @@ export default function Row({ pr }: RowProps) {
           <img
             src={pr.user.avatar_url}
             alt={pr.user.login}
-            width={45}
-            height={45}
+            width={50}
+            height={50}
             className="rounded-full object-cover"
           />
         </div>
         <div className="flex flex-col">
-          <p>{pr.title}</p>
+          <p className="text-[16px] font-bold">{pr.title}</p>
           <div className="flex gap-[6px] text-[12px] text-gray-500">
             <span>{pr.user.login}</span>
             <span>{pr.repository_url?.split("/repos/")[1] || ""}</span>
@@ -41,7 +41,7 @@ export default function Row({ pr }: RowProps) {
       <div className="flex gap-[8px]">
         <Badge label={pr.myReviewState || ""} />
         <button
-          className="bg-black text-white px-[12px] py-[4px] text-[12px] rounded-[8px] hover:bg-gray-600"
+          className="bg-black text-white px-[12px] py-[4px] text-[12px] rounded-[8px] hover:bg-gray-300 text-[13px]"
           onClick={() => handleReviewBtnClick(pr.html_url)}
           type="button"
         >
@@ -84,7 +84,7 @@ const Badge = ({ label }: { label: string }) => {
   return (
     <div
       className={cn(
-        "flex items-center rounded-full px-[8px] text-[10px]",
+        "flex items-center rounded-full px-[10px] text-[11px]",
         getBadgeColors(label)
       )}
     >
