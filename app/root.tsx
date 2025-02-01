@@ -31,13 +31,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Meta />
 				<Links />
 			</head>
-			<body>
-				<header className="h-[64px]">
-					<h1>Header</h1>
+			<body className="h-screen bg-gray-100">
+				<header className="h-[64px] p-[32px]">
+					<h1 className="text-2xl font-bold">GitHub PR Dashboard</h1>
 				</header>
-				<main className="h-[calc(100vh-64px)] p-[32px] bg-gray-100">
-					{children}
-				</main>
+				<main className="p-[32px]">{children}</main>
 				<ScrollRestoration />
 				<Scripts />
 			</body>
