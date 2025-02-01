@@ -25,7 +25,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!token) {
     return redirect("/auth/github");
   }
-
+  console.log("리뷰완료");
   const octokit = new Octokit({
     auth: token,
   });
