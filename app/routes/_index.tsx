@@ -5,10 +5,9 @@ import type { MetaFunction, LoaderFunction } from "@remix-run/node";
 
 import Filter from "~/components/Filter";
 import PRListSection from "~/components/PRListSection";
-import { PRReviewStatus } from "~/types";
+import { PRReviewStatus, PRListDto } from "~/types";
 import { getSession } from "~/utils/session.server";
 import { getPullRequests } from "~/services/github.server";
-import { PRListDto } from "~/service/usePullRequests";
 
 export const meta: MetaFunction = () => {
   return [

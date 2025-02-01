@@ -1,5 +1,5 @@
 import { cn } from "~/lib/utils";
-import { PRListDto } from "~/service/usePullRequests";
+import { PRListDto } from "~/types";
 import { formatDate } from "~/utils/format";
 
 interface RowProps {
