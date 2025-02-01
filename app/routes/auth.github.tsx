@@ -9,8 +9,6 @@ export async function loader() {
 	const redirectUri = `${baseUrl}/auth/github/callback`;
 
 	return redirect(
-		`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${encodeURIComponent(
-			redirectUri
-		)}`
+		`https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}`
 	);
 }
