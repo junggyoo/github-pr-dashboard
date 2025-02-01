@@ -7,9 +7,9 @@ export async function loader() {
 	let DOMAIN = "";
 
 	if (window.location.hostname === "localhost") {
-		DOMAIN = "http://localhost:5173";
+		DOMAIN = "localhost:5173";
 	} else {
-		DOMAIN = "https://github-pr-dashboard-amber.vercel.app";
+		DOMAIN = "github-pr-dashboard-eoding.vercel.app";
 	}
 
 	return redirect(
