@@ -1,4 +1,5 @@
 import { Octokit } from "@octokit/rest";
+import type { PRStatus } from "~/types";
 
 type PRSummary = {
 	prList: any[];
@@ -35,17 +36,19 @@ async function getPRSummary(octokit: Octokit) {
 	};
 }
 
-async function getFilteredPRList(octokit: Octokit, prStatus: string) {
+async function getFilteredPRList(octokit: Octokit, prStatus: PRStatus) {
 	const getQueryString = (baseQuery: string) => {
 		switch (prStatus) {
-			case "before":
-				return `${baseQuery} review:none`; // 리뷰가 없는 PR
 			case "pending":
-				return `${baseQuery} reviewed-by:@me -review:approved`; // 진행중인 리뷰
-			case "completed":
+				return `${baseQuery} -review:approved -review:changes_requested -review:commented`; // 리뷰가 없는 PR
+			case "changes":
+				return `${baseQuery} review:changes_requested`; // 변경 요청된 PR
+			case "approved":
 				return `${baseQuery} review:approved`; // 승인된 PR
+			case "commented":
+				return `${baseQuery} review:commented`; // 코멘트만 있는 PR
 			default:
-				return baseQuery;
+				return baseQuery; // 전체 PR
 		}
 	};
 
@@ -70,7 +73,7 @@ async function getFilteredPRList(octokit: Octokit, prStatus: string) {
 
 export async function getPullRequests(
 	token: string,
-	prStatus: string = "all"
+	prStatus: PRStatus = "all"
 ): Promise<PRSummary> {
 	const octokit = new Octokit({
 		auth: token,

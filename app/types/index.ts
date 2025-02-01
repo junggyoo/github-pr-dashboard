@@ -1,1 +1,1 @@
-export type PRStatus = "all" | "before" | "pending" | "completed";
+export type PRStatus = "all" | "changes" | "approved" | "pending" | "commented";

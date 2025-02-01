@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const { prList, assignedPRCount, totalPRCount } = await getPullRequests(
 		token,
-		prStatus
+		prStatus as PRStatus
 	);
 
 	return {
@@ -59,9 +59,7 @@ export default function Index() {
 
 	return (
 		<div className="flex flex-col gap-[32px]">
-			{/* PR 요약 정보*/}
 			<section className="flex gap-5">
-				{/* 나에게 할당된 PR */}
 				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
 					<div className="mb-6 text-sm font-medium text-gray-500">
 						🚨 나의 승인이 필요한 PR
@@ -70,8 +68,6 @@ export default function Index() {
 						{나에게_할당된_PR_개수}개
 					</div>
 				</div>
-
-				{/* 총 PR */}
 				<div className="flex-1 rounded-2xl bg-white p-6 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)]">
 					<div className="mb-6 text-sm font-medium text-gray-500">
 						🔥 내가 리뷰해야 할 PR
@@ -80,7 +76,6 @@ export default function Index() {
 				</div>
 			</section>
 			<Filter prStatus={prStatus} onStatusChange={handleStatusChange} />
-			<section>검색 및 필터 영역</section>
 			{isLoading ? <div>Loading...</div> : <PRListSection prList={prList} />}
 		</div>
 	);
