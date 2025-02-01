@@ -1,14 +1,30 @@
-import type { MetaFunction } from "@remix-run/node";
-import Filter from "~/components/Filter";
+import type { MetaFunction, LoaderFunction } from "@remix-run/node";
+import { Octokit } from "@octokit/rest";
+import { json, redirect } from "@remix-run/node";
 
+import Filter from "~/components/Filter";
 import PRListSection from "~/components/PRListSection";
 import { usePullRequests } from "~/service/usePullRequests";
+import { getSession } from "~/utils/session.server";
 
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
     { name: "description", content: "Welcome to Remix!" },
   ];
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const session = await getSession(request);
+  const token = session.get("token");
+  console.log("token", token);
+  if (!token) {
+    return redirect("/auth/github");
+  }
+  const octokit = new Octokit({
+    auth: token,
+  });
+  return null;
 };
 
 export default function Index() {
