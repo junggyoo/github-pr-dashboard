@@ -1,7 +1,8 @@
+import { PRListDto } from "~/service/usePullRequests";
 import Row from "./Row";
 
 interface PRListSectionProps {
-  prList: any[];
+  prList: PRListDto[];
 }
 
 export default function PRListSection({ prList }: PRListSectionProps) {
