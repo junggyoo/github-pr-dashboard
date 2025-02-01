@@ -1,5 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
+
 import PRListSection from "~/components/PRListSection";
+import { usePullRequests } from "~/service/usePullRequests";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,6 +11,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { prList } = usePullRequests();
+
+  console.log("prList", prList);
+
   return (
     <div className="flex flex-col gap-[32px]">
       <section>대쉬보드 영역</section>
