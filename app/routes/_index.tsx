@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { prList } = usePullRequests();
+  const { prList } = usePullRequests("");
 
   console.log("prList", prList);
 
