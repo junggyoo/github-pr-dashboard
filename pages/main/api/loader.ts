@@ -1,12 +1,12 @@
 import { redirect } from "@remix-run/node";
 import type { LoaderFunction } from "@remix-run/node";
 
-import { getSession } from "shared/lib/session-server";
+import { sessionService } from "shared/api/auth";
 import { PullRequestService } from "./service";
 import { createGitHubClient } from "../model";
 
 export const loader: LoaderFunction = async ({ request }) => {
-	const session = await getSession(request);
+	const session = await sessionService.getSession(request);
 	const token = session.get("token");
 
 	if (!token) {

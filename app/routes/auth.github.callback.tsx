@@ -1,5 +1,5 @@
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { createUserSession } from "shared/lib/session-server";
+import { sessionService } from "shared/api/auth";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const url = new URL(request.url);
@@ -26,5 +26,5 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const { access_token } = await response.json();
 
 	// 세션에 토큰 저장
-	return createUserSession(access_token, "/");
+	return sessionService.createUserSession(access_token, "/");
 };
