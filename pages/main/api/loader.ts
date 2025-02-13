@@ -2,7 +2,8 @@ import { redirect } from "@remix-run/node";
 import type { LoaderFunction } from "@remix-run/node";
 
 import { getSession } from "shared/lib/session-server";
-import { getPullRequests } from "./github-server";
+import { PullRequestService } from "./service";
+import { createGitHubClient } from "../model";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const session = await getSession(request);
@@ -12,13 +13,21 @@ export const loader: LoaderFunction = async ({ request }) => {
 		return redirect("/auth/github");
 	}
 
-	const { prList, assignedPRCount, totalPRCount } = await getPullRequests(
-		token
-	);
+	try {
+		const githubClient = await createGitHubClient(token).initialize();
+		const prService = new PullRequestService(githubClient);
 
-	return {
-		prList,
-		나에게_할당된_PR_개수: assignedPRCount,
-		총_PR_개수: totalPRCount,
-	};
+		const [prList, summary] = await Promise.all([
+			prService.getPRList(),
+			prService.getPRSummary(),
+		]);
+
+		return {
+			prList,
+			...summary,
+		};
+	} catch (error) {
+		console.error("Failed to load pull requests:", error);
+		throw new Response("Failed to load pull requests", { status: 500 });
+	}
 };

@@ -1,9 +1,4 @@
-import { PRReviewStatus } from "../types";
-
-interface FilterProps {
-	prStatus: PRReviewStatus;
-	onStatusChange: (status: PRReviewStatus) => void;
-}
+import { usePRStore } from "../model/pr-store";
 
 const FILTER_OPTIONS = [
 	{ label: "전체", value: "ALL" },
@@ -13,7 +8,9 @@ const FILTER_OPTIONS = [
 	{ label: "승인됨", value: "APPROVED" },
 ] as const;
 
-export function Filter({ prStatus, onStatusChange }: FilterProps) {
+export function Filter() {
+	const { prStatus, setPRStatus } = usePRStore();
+
 	const getBadgeColors = (state: string) => {
 		switch (state) {
 			case "APPROVED":
@@ -36,7 +33,7 @@ export function Filter({ prStatus, onStatusChange }: FilterProps) {
 			{FILTER_OPTIONS.map((option) => (
 				<button
 					key={option.value}
-					onClick={() => onStatusChange(option.value)}
+					onClick={() => setPRStatus(option.value)}
 					className={`rounded-full px-4 py-2 text-sm font-medium hover:opacity-70 ${
 						prStatus === option.value
 							? getBadgeColors(option.value)
