@@ -1,5 +1,6 @@
 import { Row } from "./row";
-import { PRListDto } from "pages/main/types";
+import { PRListDto } from "../types";
+
 interface PRListProps {
 	prList: PRListDto[];
 }
