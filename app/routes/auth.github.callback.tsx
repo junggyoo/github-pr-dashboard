@@ -1,5 +1,5 @@
 import { LoaderFunction, redirect } from "@remix-run/node";
-import { createUserSession } from "~/shared/lib/session-server";
+import { createUserSession } from "shared/lib/session-server";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const url = new URL(request.url);

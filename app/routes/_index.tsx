@@ -3,10 +3,10 @@ import { redirect } from "@remix-run/node";
 import { useLoaderData, useNavigation } from "@remix-run/react";
 import type { MetaFunction, LoaderFunction } from "@remix-run/node";
 
-import { PRReviewStatus, PRListDto } from "~/pages/main/types";
-import { getSession } from "~/shared/lib/session-server";
-import { Filter, PRList } from "~/pages/main/ui";
-import { getPullRequests } from "~/pages/main/api";
+import { PRReviewStatus, PRListDto } from "pages/main/types";
+import { getSession } from "shared/lib/session-server";
+import { Filter, PRList } from "pages/main/ui";
+import { getPullRequests } from "pages/main/api";
 
 export const meta: MetaFunction = () => {
 	return [

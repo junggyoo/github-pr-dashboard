@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
-import { getBaseUrl } from "~/shared/config/env";
+import { getBaseUrl } from "shared/config/env";
 
 export async function loader() {
 	const clientId = process.env.GITHUB_CLIENT_ID;
