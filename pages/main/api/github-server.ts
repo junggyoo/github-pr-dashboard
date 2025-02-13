@@ -1,5 +1,6 @@
 import { Octokit } from "@octokit/rest";
-import type { PRListDto, PRReviewStatus } from "~/pages/main/types";
+
+import { PRListDto, PRReviewStatus } from "../types";
 
 type PRSummary = {
 	prList: PRListDto[];

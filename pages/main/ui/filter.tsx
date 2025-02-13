@@ -1,4 +1,4 @@
-import { PRReviewStatus } from "~/pages/main/types";
+import { PRReviewStatus } from "../types";
 
 interface FilterProps {
 	prStatus: PRReviewStatus;

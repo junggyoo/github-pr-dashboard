@@ -1,7 +1,5 @@
-import { cn } from "shared/lib/cn";
-import { PRListDto } from "~/pages/main/types";
-import { formatDate } from "shared/lib/format";
-
+import { PRListDto } from "pages/main/types";
+import { cn, formatDate } from "shared/lib";
 interface RowProps {
 	pr: PRListDto;
 }
